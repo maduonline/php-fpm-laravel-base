@@ -1,5 +1,7 @@
 FROM php:8.2.3-fpm-bullseye
 
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
 RUN pecl install redis && docker-php-ext-enable redis
 RUN docker-php-ext-install pdo_mysql
 
