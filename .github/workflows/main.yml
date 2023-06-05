@@ -37,5 +37,7 @@ jobs:
           context: .
           #platforms: linux/amd64,linux/arm64
           push: true
-          tags: "maduonline/php-fpm-laravel-base:${{github.event.release.name}}"
+          tags: |
+            maduonline/php-fpm-laravel-base:latest
+            "maduonline/php-fpm-laravel-base:${{github.event.release.name}}"
           labels: ${{ steps.meta.outputs.labels }}
