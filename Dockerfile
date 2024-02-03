@@ -8,11 +8,11 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Install most needed php extensions
 RUN pecl install redis && docker-php-ext-enable redis
-RUN docker-php-ext-install pdo_mysql intl
+RUN docker-php-ext-install pdo_mysql
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions gd zip pcntl
+    install-php-extensions gd zip pcntl intl
 
 # Set workdir
 WORKDIR /var/www
