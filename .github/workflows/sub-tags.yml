@@ -38,4 +38,4 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: maduonline/php-fpm-laravel-base
-          tags: ${{ github.event.release.name }}
+          tags: ${{ env.TAG_NAME }}
