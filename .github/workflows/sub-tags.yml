@@ -1,0 +1,41 @@
+name: Publish Docker image
+
+on:
+  push:
+    branches:
+      - 'build/*'
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract part of branch name
+        id: extract_branch
+        run: |
+          FULL_BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          TAG_NAME=${FULL_BRANCH_NAME#*/}
+          echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+          echo "TAG_NAME=${TAG_NAME}"
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: maduonline/php-fpm-laravel-base
+          tags: ${{ env.TAG_NAME }}
