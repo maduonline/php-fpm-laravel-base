@@ -39,3 +39,13 @@ jobs:
         with:
           images: maduonline/php-fpm-laravel-base
           tags: ${{ env.TAG_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            "maduonline/php-fpm-laravel-base:${{ env.TAG_NAME }}"
+          labels: ${{ steps.meta.outputs.labels }}
