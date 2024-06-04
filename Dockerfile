@@ -14,5 +14,8 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions gd zip pcntl intl
 
+# Copy opcache.ini file to setup opcache
+COPY docker/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
 # Set workdir
 WORKDIR /var/www
