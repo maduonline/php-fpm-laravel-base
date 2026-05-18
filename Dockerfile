@@ -1,4 +1,4 @@
-FROM php:8.4.4-fpm-bullseye
+FROM php:8.4.21-fpm-trixie
 
 # Install mysql client for any dump requirements
 RUN apt update && apt install -y default-mysql-client && rm -rf /var/lib/apt
