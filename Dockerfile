@@ -1,4 +1,4 @@
-FROM php:8.4.21-fpm-trixie
+FROM php:8.5.11-fpm-trixie
 
 # Install mysql client for any dump requirements
 RUN apt update && apt install -y default-mysql-client && rm -rf /var/lib/apt
@@ -7,8 +7,9 @@ RUN apt update && apt install -y default-mysql-client && rm -rf /var/lib/apt
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Install most needed php extensions
+# OPcache is compiled into PHP since 8.5, so it no longer needs installing
 RUN pecl install redis && docker-php-ext-enable redis
-RUN docker-php-ext-install pdo_mysql opcache
+RUN docker-php-ext-install pdo_mysql
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && \
