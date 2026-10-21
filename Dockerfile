@@ -8,7 +8,14 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Install most needed php extensions
 # OPcache is compiled into PHP since 8.5, so it no longer needs installing
-RUN pecl install redis && docker-php-ext-enable redis
+# Build redis from the phpredis GitHub tarball instead of PECL, so a pecl.php.net outage can't break the build
+ARG PHPREDIS_VERSION=6.3.0
+RUN docker-php-source extract \
+    && mkdir /usr/src/php/ext/redis \
+    && curl -fsSL "https://github.com/phpredis/phpredis/archive/refs/tags/${PHPREDIS_VERSION}.tar.gz" \
+        | tar -xz -C /usr/src/php/ext/redis --strip-components=1 \
+    && docker-php-ext-install redis \
+    && docker-php-source delete
 RUN docker-php-ext-install pdo_mysql
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
