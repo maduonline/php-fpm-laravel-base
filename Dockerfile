@@ -1,4 +1,4 @@
-FROM php:8.5.11-fpm-trixie
+FROM php:8.5.12-fpm-trixie
 
 # Install mysql client for any dump requirements
 RUN apt update && apt install -y default-mysql-client && rm -rf /var/lib/apt
